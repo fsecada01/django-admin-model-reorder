@@ -1,45 +1,32 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 from copy import deepcopy
 
 from django.conf import settings
 from django.contrib import admin
 from django.core.exceptions import ImproperlyConfigured
-from django.utils.six import string_types
-
-try:
-    from django.urls import resolve, Resolver404
-except ModuleNotFoundError:
-    # Deprecated since Django 1.10, removed in Django 2.0
-    from django.urls.urlresolvers import resolve, Resolver404
-
-try:
-    from django.utils.deprecation import MiddlewareMixin
-except ImportError:
-    # Not required for Django <= 1.9, see:
-    # https://docs.djangoproject.com/en/1.10/topics/http/middleware/#upgrading-pre-django-1-10-style-middleware
-    MiddlewareMixin = object
+from django.urls import resolve, Resolver404
+from django.utils.deprecation import MiddlewareMixin
 
 
 class ModelAdminReorder(MiddlewareMixin):
+    settings_variable_name = 'ADMIN_REORDER'
 
     def init_config(self, request, app_list):
         self.request = request
         self.app_list = app_list
+        self.config = getattr(settings, self.settings_variable_name, None)
 
-        self.config = getattr(settings, 'ADMIN_REORDER', None)
         if not self.config:
             # ADMIN_REORDER settings is not defined.
-            raise ImproperlyConfigured('ADMIN_REORDER config is not defined.')
+            raise ImproperlyConfigured(f'{self.settings_variable_name} config is not defined.')
 
         if not isinstance(self.config, (tuple, list)):
             raise ImproperlyConfigured(
-                'ADMIN_REORDER config parameter must be tuple or list. '
-                'Got {config}'.format(config=self.config))
+                '{name} config parameter must be tuple or list. '
+                'Got {config}'.format(name=self.settings_variable_name, config=self.config))
 
-        admin_index = admin.site.index(request)
+        # admin_index = admin.site.index(request)
+        admin_site = self.get_admin_site()
+        admin_index = admin_site.index(request)
         try:
             # try to get all installed models
             app_list = admin_index.context_data['app_list']
@@ -55,6 +42,9 @@ class ModelAdminReorder(MiddlewareMixin):
                     app['app_label'], model['object_name'])
                 self.models_list.append(model)
 
+    def get_admin_site(self):
+        return admin.site
+
     def get_app_list(self):
         ordered_app_list = []
         for app_config in self.config:
@@ -64,11 +54,13 @@ class ModelAdminReorder(MiddlewareMixin):
         return ordered_app_list
 
     def make_app(self, app_config):
-        if not isinstance(app_config, (dict, string_types)):
-            raise TypeError('ADMIN_REORDER list item must be '
-                            'dict or string. Got %s' % repr(app_config))
+        if not isinstance(app_config, (dict, str)):
+            raise TypeError('{name} list item must be '
+                            'dict or string. Got {config}'.format(
+                                name=self.settings_variable_name, config=repr(app_config)
+                            ))
 
-        if isinstance(app_config, string_types):
+        if isinstance(app_config, str):
             # Keep original label and models
             return self.find_app(app_config)
         else:
@@ -86,8 +78,11 @@ class ModelAdminReorder(MiddlewareMixin):
 
     def process_app(self, app_config):
         if 'app' not in app_config:
-            raise NameError('ADMIN_REORDER list item must define '
-                            'a "app" name. Got %s' % repr(app_config))
+            raise NameError('{name} list item must define '
+                            'a "app" name. Got {config}'.format(
+                                name=self.settings_variable_name,
+                                config=repr(app_config)
+                            ))
 
         app = self.find_app(app_config['app'])
         if app:
@@ -108,9 +103,12 @@ class ModelAdminReorder(MiddlewareMixin):
 
     def process_models(self, models_config):
         if not isinstance(models_config, (dict, list, tuple)):
-            raise TypeError('"models" config for ADMIN_REORDER list '
+            raise TypeError('"models" config for {name} list '
                             'item must be dict or list/tuple. '
-                            'Got %s' % repr(models_config))
+                            'Got {config}'.format(
+                                name=self.settings_variable_name,
+                                config=repr(models_config)
+                            ))
 
         ordered_models_list = []
         for model_config in models_config:
@@ -140,13 +138,20 @@ class ModelAdminReorder(MiddlewareMixin):
             model['name'] = model_config['label']
             return model
 
+    def get_admin_site_url_names(self):
+        """
+        List of admin site url_names where to apply middleware logic
+        """
+        return ['index', 'app_list']
+
     def process_template_response(self, request, response):
         try:
             url = resolve(request.path_info)
         except Resolver404:
             return response
+
         if not url.app_name == 'admin' and \
-                url.url_name not in ['index', 'app_list']:
+                url.url_name not in self.get_admin_site_url_names():
             # current view is not a django admin index
             # or app_list view, bail out!
             return response
@@ -161,3 +166,23 @@ class ModelAdminReorder(MiddlewareMixin):
         ordered_app_list = self.get_app_list()
         response.context_data['app_list'] = ordered_app_list
         return response
+
+
+class ModelAdminReorderMiddlewareMixin(ModelAdminReorder):
+    """
+    If you have multiple admin, then you can:
+
+    1) define your own middleware class inherited from ModelAdminReorderMiddlewareMixin
+    2) set settings_variable_name attribute
+    3) overwrite get_admin_site() method to return another admin.site
+    4) overwirte get_admin_site_url_names() method with appending your custom urls names
+
+    """
+
+    # def get_admin_site(self):
+    #     return short_admin_site
+
+    # def get_admin_site_url_names(self):
+    #     names = super().get_admin_site_url_names()
+    #     names.append('short_admin_index')
+    #     return names
