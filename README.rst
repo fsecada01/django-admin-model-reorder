@@ -108,7 +108,9 @@ Configuration
         )},
     )
 
+
 If our project has multiple admin sites:
+========================================
 
 1. Add `admin_reorder` to `INSTALLED_APPS`:
 
@@ -122,8 +124,7 @@ If our project has multiple admin sites:
 
 2. Create your own middleware inherited from `ModelAdminReorderMiddlewareMixin`, define `settings_variable_name` and methods `get_admin_site` and `get_admin_site_url_names`
 
-
-    .. code-block:: python
+  .. code-block:: python
 
     from admin_reorder.middleware import ModelAdminReorderMiddlewareMixin
     from PROJECT_NAME.admin import short_admin_site
