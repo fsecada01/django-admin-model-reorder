@@ -107,3 +107,34 @@ Configuration
             {'model': 'auth.User', 'label': 'Staff'},
         )},
     )
+
+If our project has multiple admin sites:
+
+1. Add `admin_reorder` to `INSTALLED_APPS`:
+
+   .. code-block:: python
+
+    INSTALLED_APPS = (
+        ...
+        'admin_reorder',
+        ...
+    )
+
+2. Create your own middleware inherited from `ModelAdminReorderMiddlewareMixin`, define `settings_variable_name` and methods `get_admin_site` and `get_admin_site_url_names`
+
+
+    .. code-block:: python
+
+    from admin_reorder.middleware import ModelAdminReorderMiddlewareMixin
+    from PROJECT_NAME.admin import short_admin_site
+
+    class ReorderShortAdminSiteMiddleware(ModelAdminReorderMiddlewareMixin):
+        settings_variable_name = 'SHORT_ADMIN_REORDER'
+
+        def get_admin_site(self):
+            return short_admin_site
+
+        def get_admin_site_url_names(self):
+            names = super().get_admin_site_url_names()
+            names.append('short_admin_index')
+            return names
