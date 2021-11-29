@@ -139,3 +139,14 @@ If our project has multiple admin sites:
             names = super().get_admin_site_url_names()
             names.append('short_admin_index')
             return names
+
+
+3. Add the `ReorderShortAdminSiteMiddleware` to `MIDDLEWARE_CLASSES`:
+
+   .. code-block:: python
+
+    MIDDLEWARE_CLASSES = (
+        ...
+        'PROJECT_NAME.middleware.ReorderShortAdminSiteMiddleware',
+        ...
+    )
