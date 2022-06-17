@@ -46,7 +46,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'django-model-admin-reorder'
+project = u'django-admin-model-reorder'
 copyright = u'2014, Mishbah Razzaque'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -173,7 +173,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'django-model-admin-reorderdoc'
+htmlhelp_basename = 'django-admin-model-reorderdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -192,7 +192,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'django-model-admin-reorder.tex', u'django-model-admin-reorder Documentation',
+  ('index', 'django-admin-model-reorder.tex', u'django-admin-model-reorder Documentation',
    u'Mishbah Razzaque', 'manual'),
 ]
 
@@ -222,7 +222,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'django-model-admin-reorder', u'django-model-admin-reorder Documentation',
+    ('index', 'django-admin-model-reorder', u'django-admin-model-reorder Documentation',
      [u'Mishbah Razzaque'], 1)
 ]
 
@@ -236,8 +236,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'django-model-admin-reorder', u'django-model-admin-reorder Documentation',
-   u'Mishbah Razzaque', 'django-model-admin-reorder', 'One line description of project.',
+  ('index', 'django-admin-model-reorder', u'django-admin-model-reorder Documentation',
+   u'Mishbah Razzaque', 'django-admin-model-reorder', 'One line description of project.',
    'Miscellaneous'),
 ]
 

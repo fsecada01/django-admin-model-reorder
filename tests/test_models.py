@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
-test_django-model-admin-reorder
+test_django-admin-model-reorder
 ------------
 
-Tests for `django-model-admin-reorder` models module.
+Tests for `django-admin-model-reorder` models module.
 """
 
 import os

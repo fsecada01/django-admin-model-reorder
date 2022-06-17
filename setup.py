@@ -24,13 +24,13 @@ readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
-    name='django-model-admin-reorder',
+    name='django-admin-model-reorder',
     version=version,
     description="""Custom ordering for the apps and models in the admin app.""",
     long_description=readme + '\n\n' + history,
     author='Francis Secada',
     author_email='francis.secada@gmail.com',
-    url='https://github.com/fsecada/django-model-admin-reorder',
+    url='https://github.com/fsecada/django-admin-model-reorder',
     packages=[
         'admin_reorder',
     ],
@@ -40,7 +40,7 @@ setup(
     ],
     license="BSD",
     zip_safe=False,
-    keywords='django-model-admin-reorder',
+    keywords='django-admin-model-reorder',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Framework :: Django',
