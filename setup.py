@@ -30,7 +30,7 @@ setup(
     long_description=readme + '\n\n' + history,
     author='Francis Secada',
     author_email='francis.secada@gmail.com',
-    url='https://github.com/fsecada/django-modeladmin-reorder',
+    url='https://github.com/fsecada/django-model-admin-reorder',
     packages=[
         'admin_reorder',
     ],

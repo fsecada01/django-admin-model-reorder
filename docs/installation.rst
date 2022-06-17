@@ -4,9 +4,9 @@ Installation
 
 At the command line::
 
-    $ easy_install django-modeladmin-reorder
+    $ easy_install django-model-admin-reorder
 
 Or, if you have virtualenvwrapper installed::
 
-    $ mkvirtualenv django-modeladmin-reorder
-    $ pip install django-modeladmin-reorder
+    $ mkvirtualenv django-model-admin-reorder
+    $ pip install django-model-admin-reorder

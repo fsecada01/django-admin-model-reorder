@@ -24,7 +24,7 @@ clean-pyc:
 	find . -name '*~' -exec rm -f {} +
 
 lint:
-	flake8 django-modeladmin-reorder tests
+	flake8 django-model-admin-reorder tests
 
 test:
 	python runtests.py test
@@ -33,15 +33,15 @@ test-all:
 	tox
 
 coverage:
-	coverage run --source django-modeladmin-reorder setup.py test
+	coverage run --source django-model-admin-reorder setup.py test
 	coverage report -m
 	coverage html
 	open htmlcov/index.html
 
 docs:
-	rm -f docs/django-modeladmin-reorder.rst
+	rm -f docs/django-model-admin-reorder.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ django-modeladmin-reorder
+	sphinx-apidoc -o docs/ django-model-admin-reorder
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	open docs/_build/html/index.html

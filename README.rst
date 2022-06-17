@@ -3,19 +3,19 @@ django-model-admin-reorder
 =============================
 
 
-.. image:: http://img.shields.io/travis/mishbahr/django-modeladmin-reorder.svg?style=flat-square
-    :target: https://travis-ci.org/mishbahr/django-modeladmin-reorder/
+.. image:: http://img.shields.io/travis/mishbahr/django-model-admin-reorder.svg?style=flat-square
+    :target: https://travis-ci.org/fsecada/django-model-admin-reorder/
 
-.. image:: http://img.shields.io/pypi/v/django-modeladmin-reorder.svg?style=flat-square
-    :target: https://pypi.python.org/pypi/django-modeladmin-reorder/
+.. image:: http://img.shields.io/pypi/v/django-model-admin-reorder.svg?style=flat-square
+    :target: https://pypi.python.org/pypi/django-model-admin-reorder/
     :alt: Latest Version
 
-.. image:: http://img.shields.io/pypi/dm/django-modeladmin-reorder.svg?style=flat-square
-    :target: https://pypi.python.org/pypi/django-modeladmin-reorder/
+.. image:: http://img.shields.io/pypi/dm/django-model-admin-reorder.svg?style=flat-square
+    :target: https://pypi.python.org/pypi/django-model-admin-reorder/
     :alt: Downloads
 
-.. image:: http://img.shields.io/pypi/l/django-modeladmin-reorder.svg?style=flat-square
-    :target: https://pypi.python.org/pypi/django-modeladmin-reorder/
+.. image:: http://img.shields.io/pypi/l/django-model-admin-reorder.svg?style=flat-square
+    :target: https://pypi.python.org/pypi/django-model-admin-reorder/
     :alt: License
 
 
@@ -51,7 +51,7 @@ Features
 Documentation
 -------------
 
-The full documentation is at https://django-modeladmin-reorder.readthedocs.org.
+The full documentation is at https://django-model-admin-reorder.readthedocs.org.
 
 
 Install
@@ -61,7 +61,7 @@ Install django-model-admin-reorder:
 
 .. code-block:: bash
 
-    pip install django-modeladmin-reorder
+    pip install django-model-admin-reorder
 
 
 Configuration
