@@ -47,3 +47,6 @@ output/
 #PyCharm
 .idea/
 *.bat
+.venv
+venv
+*.env
