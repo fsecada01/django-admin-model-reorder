@@ -1,5 +1,5 @@
 =============================
-django-modeladmin-reorder
+django-model-admin-reorder
 =============================
 
 
@@ -21,6 +21,14 @@ django-modeladmin-reorder
 
 Custom ordering for the apps and models in the admin app. You can also rename, cross link or exclude models from the app list.
 
+-- To Be Updated
+
+
+Disclaimer
+---------
+This is a fork that's intended to provide support for Django v.3.2 and beyond, as well as new versions of python. The main repo has not been updated since 2018 and the developer is MIA. There are numerous forks but no dedicated Pypi distros. For production-level work in enterprise settings, this can be a significant blocker towards keeping code up to date.
+
+Special thanks goes out to `Jrago <https://github.com/Jragon>`_ for his fork and work. Without that, I would have had to spend numerous minutes updating and linting code.
 
 Features
 --------
@@ -49,7 +57,7 @@ The full documentation is at https://django-modeladmin-reorder.readthedocs.org.
 Install
 ----------
 
-Install django-modeladmin-reorder:
+Install django-model-admin-reorder:
 
 .. code-block:: bash
 

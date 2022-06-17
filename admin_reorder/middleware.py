@@ -3,12 +3,12 @@ from copy import deepcopy
 from django.conf import settings
 from django.contrib import admin
 from django.core.exceptions import ImproperlyConfigured
-from django.urls import resolve, Resolver404
+from django.urls import Resolver404, resolve
 from django.utils.deprecation import MiddlewareMixin
 
 
 class ModelAdminReorder(MiddlewareMixin):
-    settings_variable_name = 'ADMIN_REORDER'
+    settings_variable_name = "ADMIN_REORDER"
 
     def init_config(self, request, app_list):
         self.request = request
@@ -17,19 +17,24 @@ class ModelAdminReorder(MiddlewareMixin):
 
         if not self.config:
             # ADMIN_REORDER settings is not defined.
-            raise ImproperlyConfigured(f'{self.settings_variable_name} config is not defined.')
+            raise ImproperlyConfigured(
+                f"{self.settings_variable_name} config is not defined."
+            )
 
         if not isinstance(self.config, (tuple, list)):
             raise ImproperlyConfigured(
-                '{name} config parameter must be tuple or list. '
-                'Got {config}'.format(name=self.settings_variable_name, config=self.config))
+                "{name} config parameter must be tuple or list. "
+                "Got {config}".format(
+                    name=self.settings_variable_name, config=self.config
+                )
+            )
 
         # admin_index = admin.site.index(request)
         admin_site = self.get_admin_site()
         admin_index = admin_site.index(request)
         try:
             # try to get all installed models
-            app_list = admin_index.context_data['app_list']
+            app_list = admin_index.context_data["app_list"]
         except KeyError:
             # use app_list from context if this fails
             pass
@@ -37,9 +42,10 @@ class ModelAdminReorder(MiddlewareMixin):
         # Flatten all models from apps
         self.models_list = []
         for app in app_list:
-            for model in app['models']:
-                model['model_name'] = self.get_model_name(
-                    app['app_label'], model['object_name'])
+            for model in app["models"]:
+                model["model_name"] = self.get_model_name(
+                    app["app_label"], model["object_name"]
+                )
                 self.models_list.append(model)
 
     def get_admin_site(self):
@@ -55,10 +61,12 @@ class ModelAdminReorder(MiddlewareMixin):
 
     def make_app(self, app_config):
         if not isinstance(app_config, (dict, str)):
-            raise TypeError('{name} list item must be '
-                            'dict or string. Got {config}'.format(
-                                name=self.settings_variable_name, config=repr(app_config)
-                            ))
+            raise TypeError(
+                "{name} list item must be "
+                "dict or string. Got {config}".format(
+                    name=self.settings_variable_name, config=repr(app_config)
+                )
+            )
 
         if isinstance(app_config, str):
             # Keep original label and models
@@ -68,47 +76,49 @@ class ModelAdminReorder(MiddlewareMixin):
 
     def find_app(self, app_label):
         for app in self.app_list:
-            if app['app_label'] == app_label:
+            if app["app_label"] == app_label:
                 return app
 
     def get_model_name(self, app_name, model_name):
-        if '.' not in model_name:
-            model_name = '%s.%s' % (app_name, model_name)
+        if "." not in model_name:
+            model_name = "%s.%s" % (app_name, model_name)
         return model_name
 
     def process_app(self, app_config):
-        if 'app' not in app_config:
-            raise NameError('{name} list item must define '
-                            'a "app" name. Got {config}'.format(
-                                name=self.settings_variable_name,
-                                config=repr(app_config)
-                            ))
+        if "app" not in app_config:
+            raise NameError(
+                "{name} list item must define "
+                'a "app" name. Got {config}'.format(
+                    name=self.settings_variable_name, config=repr(app_config)
+                )
+            )
 
-        app = self.find_app(app_config['app'])
+        app = self.find_app(app_config["app"])
         if app:
             app = deepcopy(app)
             # Rename app
-            if 'label' in app_config:
-                app['name'] = app_config['label']
+            if "label" in app_config:
+                app["name"] = app_config["label"]
 
             # Process app models
-            if 'models' in app_config:
-                models_config = app_config.get('models')
+            if "models" in app_config:
+                models_config = app_config.get("models")
                 models = self.process_models(models_config)
                 if models:
-                    app['models'] = models
+                    app["models"] = models
                 else:
                     return None
             return app
 
     def process_models(self, models_config):
         if not isinstance(models_config, (dict, list, tuple)):
-            raise TypeError('"models" config for {name} list '
-                            'item must be dict or list/tuple. '
-                            'Got {config}'.format(
-                                name=self.settings_variable_name,
-                                config=repr(models_config)
-                            ))
+            raise TypeError(
+                '"models" config for {name} list '
+                "item must be dict or list/tuple. "
+                "Got {config}".format(
+                    name=self.settings_variable_name, config=repr(models_config)
+                )
+            )
 
         ordered_models_list = []
         for model_config in models_config:
@@ -125,24 +135,27 @@ class ModelAdminReorder(MiddlewareMixin):
 
     def find_model(self, model_name):
         for model in self.models_list:
-            if model['model_name'] == model_name:
+            if model["model_name"] == model_name:
                 return model
 
     def process_model(self, model_config):
         # Process model defined as { model: 'model', 'label': 'label' }
-        for key in ('model', 'label', ):
+        for key in (
+            "model",
+            "label",
+        ):
             if key not in model_config:
                 return
-        model = self.find_model(model_config['model'])
+        model = self.find_model(model_config["model"])
         if model:
-            model['name'] = model_config['label']
+            model["name"] = model_config["label"]
             return model
 
     def get_admin_site_url_names(self):
         """
         List of admin site url_names where to apply middleware logic
         """
-        return ['index', 'app_list']
+        return ["index", "app_list"]
 
     def process_template_response(self, request, response):
         try:
@@ -150,19 +163,21 @@ class ModelAdminReorder(MiddlewareMixin):
         except Resolver404:
             return response
 
-        if not url.app_name == 'admin' and \
-                url.url_name not in self.get_admin_site_url_names():
+        if (
+            not url.app_name == "admin"
+            and url.url_name not in self.get_admin_site_url_names()
+        ):
             # current view is not a django admin index
             # or app_list view, bail out!
             return response
 
-        if 'app_list' in response.context_data:
-            app_list = response.context_data['app_list']
-            context_key = 'app_list'
-        elif 'available_apps' in response.context_data:
-            app_list = response.context_data['available_apps']
-            context_key = 'available_apps'
-        else: 
+        if "app_list" in response.context_data:
+            app_list = response.context_data["app_list"]
+            context_key = "app_list"
+        elif "available_apps" in response.context_data:
+            app_list = response.context_data["available_apps"]
+            context_key = "available_apps"
+        else:
             # there is no app_list! nothing to reorder
             return response
 

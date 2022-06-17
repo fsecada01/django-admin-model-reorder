@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "django-model-admin-reorder"
+version = "0.1.0"
+description = "Fork of django-modeladmin-reorder (courtesy of Misbah Razzaque); intended to keep up with the updates of Django and python"
+authors = ["fsecada01 <francis.secada@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+Django = ">=3.2"
+
+[tool.poetry.dev-dependencies]
+black = "^22.3.0"
+coverage = "^6.4.1"
+coveralls = "^3.3.1"
+isort = "^5.10.1"
+mock = ">=1.0.1"
+nose = ">=1.3.0"
+django-nose = ">=1.4"
+flake8 = ">=2.1.0"
+tox = ">=1.7.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
