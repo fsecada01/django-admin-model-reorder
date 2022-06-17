@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-admin-model-reorder"
-version = "0.1.0"
+version = "0.3.2"
 description = "Fork of django-admin-model-reorder (courtesy of Misbah Razzaque); intended to keep up with the updates of Django and python"
 authors = ["fsecada01 <francis.secada@gmail.com>"]
 license = "MIT"
